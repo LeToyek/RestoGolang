@@ -3,16 +3,14 @@ package entities
 import "time"
 
 type User struct {
-	ID            int
-	First_name    string    `json:"first_name" validate:"required,min=2,max=100"`
-	Last_name     string    `json:"last_name" validate:"required,min=2,max=100"`
-	Email         string    `json:"email" validate:"email,required"`
-	Password      string    `json:"password" validate:"required,min=6"`
-	Avatar        string    `json:"avatar"`
-	Phone         string    `json:"phone" validate:"required"`
-	Token         string    `json:"token"`
-	Refresh_Token string    `json:"refresh_token"`
-	Created_at    time.Time `json:"created_at"`
-	Updated_at    time.Time `json:"updated_at"`
-	User_id       string    `json:"user_id" validate:"required"`
+	First_name    string    `db:"first_name" json:"first_name" validate:"required,min=2,max=100"`
+	Last_name     string    `db:"last_name" json:"last_name" validate:"required,min=2,max=100"`
+	Email         string    `db:"email" json:"email" validate:"email,required"`
+	Password      string    `db:"password" json:"password" validate:"required,min=6"`
+	Phone         string    `db:"phone" json:"phone" validate:"required"`
+	Token         string    `db:"token" json:"token"`
+	Refresh_Token string    `db:"refresh_token" json:"refresh_token"`
+	Created_at    time.Time `db:"created_at" json:"created_at"`
+	Updated_at    time.Time `db:"updated_at" json:"updated_at"`
+	User_id       string    `db:"user_id" json:"user_id" validate:"required"`
 }

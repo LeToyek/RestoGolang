@@ -1,0 +1,1 @@
+migrate -source file://db -database postgres://postgres:handoko@localhost:5432/resto?sslmode=disable $1 $2

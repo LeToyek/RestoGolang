@@ -1,0 +1,1 @@
+migrate create -dir db -ext sql $1
