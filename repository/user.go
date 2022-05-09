@@ -7,9 +7,10 @@ import (
 )
 
 type UserRepository interface {
-	AddUser(user entities.User) (entities.User, error)
-	GetUsers(users []entities.User) ([]entities.User, error)
-	// GetUser(user entities.User) (entities.User, error)
+	AddUser(user entities.User) error
+	GetUsers() ([]entities.User, error)
+	GetUser(id string) (entities.User, error)
+	GetLogin(email string, password string) error
 }
 
 func (r *Repository) AddUser(user entities.User) error {
@@ -65,6 +66,8 @@ func (r *Repository) GetUser(id string) (entities.User, error) {
 		&user.Email,
 		&user.Password,
 		&user.Phone,
+		&user.Created_at,
+		&user.Updated_at,
 		&user.User_id,
 	)
 	if err == sql.ErrNoRows {
@@ -75,4 +78,22 @@ func (r *Repository) GetUser(id string) (entities.User, error) {
 	}
 
 	return user, err
+}
+func (r *Repository) GetLogin(email string, password string) error {
+	var user entities.User
+
+	row := r.DB.QueryRow(queryGetAcc, email)
+	err := row.Scan(
+		&user.Password,
+	)
+	if err == sql.ErrNoRows {
+		return errors.New("email tidak ditemukan")
+	}
+	if password != user.Password {
+		return errors.New("wrong password")
+	}
+	if err != nil {
+		return err
+	}
+	return err
 }

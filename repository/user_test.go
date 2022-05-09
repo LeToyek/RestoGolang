@@ -21,8 +21,8 @@ func TestRepo_AddUser(t *testing.T) {
 		Email:      "toyek@goblog.com",
 		Password:   "toyek",
 		Phone:      "12131213",
-		Created_at: time.Now(),
-		Updated_at: time.Now(),
+		Created_at: time.Now().String(),
+		Updated_at: time.Now().String(),
 		User_id:    "41213",
 	}
 	tests := []struct {
@@ -100,8 +100,8 @@ func TestRepo_GetUsers(t *testing.T) {
 		Email:      "toyek@goblog.com",
 		Password:   "toyek",
 		Phone:      "12131213",
-		Created_at: time.Now(),
-		Updated_at: time.Now(),
+		Created_at: time.Now().String(),
+		Updated_at: time.Now().String(),
 		User_id:    "41213",
 	}
 	tests := []struct {
@@ -133,8 +133,8 @@ func TestRepo_GetUsers(t *testing.T) {
 						user.Created_at,
 						user.Updated_at,
 						user.User_id))
-				mock.sql.ExpectQuery(regexp.QuoteMeta(queryGetAll)).
-					WillReturnError()
+				// mock.sql.ExpectQuery(regexp.QuoteMeta(queryGetAll)).
+				// 	WillReturnError()
 			},
 		},
 	}
