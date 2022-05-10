@@ -76,8 +76,8 @@ func (h *Handler) Login(c *gin.Context) {
 		})
 		panic(err)
 	}
-	token, expirationTime := helper.GenerateAllTokens(loginReq.Email)
-	fmt.Println(token)
+	token, refreshToken, expirationTime := helper.GenerateAllTokens(loginReq.Email)
+	fmt.Println(refreshToken)
 	http.SetCookie(
 		c.Writer,
 		&http.Cookie{
