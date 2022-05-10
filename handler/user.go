@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"resto/entities"
 	"time"
@@ -76,8 +75,7 @@ func (h *Handler) Login(c *gin.Context) {
 		})
 		panic(err)
 	}
-	token, refreshToken, expirationTime := helper.GenerateAllTokens(loginReq.Email)
-	fmt.Println(refreshToken)
+	token, expirationTime := helper.GenerateAllTokens(loginReq.Email)
 	http.SetCookie(
 		c.Writer,
 		&http.Cookie{
