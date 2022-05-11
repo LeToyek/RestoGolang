@@ -31,7 +31,7 @@ func (r *Repository) AddUser(user entities.User) error {
 func (r *Repository) GetUsers() ([]entities.User, error) {
 	var users []entities.User
 
-	rows, err := r.DB.Query(queryGetAll)
+	rows, err := r.DB.Query(queryGetAllUsers)
 	if err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (r *Repository) GetUsers() ([]entities.User, error) {
 func (r *Repository) GetUser(id string) (entities.User, error) {
 	var user entities.User
 
-	row := r.DB.QueryRow(queryGetOne, id)
+	row := r.DB.QueryRow(queryGetOneUser, id)
 	err := row.Scan(
 		&user.First_name,
 		&user.Last_name,

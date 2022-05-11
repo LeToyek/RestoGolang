@@ -115,7 +115,7 @@ func TestRepo_GetUsers(t *testing.T) {
 			wantUser: user,
 			wantErr:  assert.AnError,
 			mock: func(mock mockFields) {
-				mock.sql.ExpectQuery(regexp.QuoteMeta(queryGetAll)).
+				mock.sql.ExpectQuery(regexp.QuoteMeta(queryGetAllUsers)).
 					WillReturnRows(sqlmock.NewRows([]string{
 						"first_name",
 						"last_name",

@@ -1,6 +1,6 @@
-CREATE TABLE tables(
+CREATE TABLE table_resto(
     Number serial primary key,
-    Guests int,
+    Chairs int,
     isUsed boolean,
     Created_at varchar,
     Updated_at varchar
