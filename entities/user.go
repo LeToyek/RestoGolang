@@ -8,5 +8,5 @@ type User struct {
 	Phone      string `db:"phone" json:"phone" validate:"required"`
 	Created_at string `db:"created_at" json:"created_at"`
 	Updated_at string `db:"updated_at" json:"updated_at"`
-	User_id    string `db:"user_id" json:"user_id" validate:"required"`
+	User_id    string `db:"user_id" json:"user_id"`
 }

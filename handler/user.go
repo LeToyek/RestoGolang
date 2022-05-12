@@ -40,7 +40,7 @@ func (h *Handler) GetUser(c *gin.Context) {
 
 }
 func (h *Handler) GetUsers(c *gin.Context) {
-	_, err := helper.ValidateToken(c)
+	claims, err := helper.ValidateToken(c)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusForbidden, map[string]interface{}{
 			"success": false,
@@ -55,7 +55,8 @@ func (h *Handler) GetUsers(c *gin.Context) {
 		})
 	}
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"users": users,
+		"users":  users,
+		"userID": claims.ID,
 	})
 }
 func (h *Handler) Login(c *gin.Context) {
@@ -67,7 +68,7 @@ func (h *Handler) Login(c *gin.Context) {
 
 	}
 
-	err := h.Service.GetLogin(loginReq.Email, loginReq.Password)
+	userID, err := h.Service.GetLogin(loginReq.Email, loginReq.Password)
 	if err != nil {
 		c.IndentedJSON(http.StatusUnauthorized, gin.H{
 			"success": false,
@@ -75,7 +76,7 @@ func (h *Handler) Login(c *gin.Context) {
 		})
 		panic(err)
 	}
-	token, expirationTime := helper.GenerateAllTokens(loginReq.Email)
+	token, expirationTime := helper.GenerateAllTokens(userID)
 	http.SetCookie(
 		c.Writer,
 		&http.Cookie{

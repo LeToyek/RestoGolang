@@ -12,15 +12,15 @@ import (
 var JwtKey = []byte("secret_key")
 
 type Claims struct {
-	Username string `json:"username"`
+	ID string `json:"id"`
 	jwt.StandardClaims
 }
 
-func GenerateAllTokens(username string) (string, time.Time) {
+func GenerateAllTokens(userID string) (string, time.Time) {
 	expirationTime := time.Now().Add(time.Minute * 5)
 
 	claims := &Claims{
-		Username: username,
+		ID: userID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -69,5 +69,5 @@ func ValidateToken(c *gin.Context) (*Claims, error) {
 		return nil, errors.New("token is expired")
 	}
 
-	return nil, err
+	return claims, err
 }

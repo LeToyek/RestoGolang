@@ -18,7 +18,7 @@ const (
 
 	queryGetOneUser = `SELECT * FROM users WHERE user_id=$1;`
 
-	queryGetAcc = `SELECT password FROM users WHERE email=$1;`
+	queryGetAcc = `SELECT password,user_id FROM users WHERE email=$1;`
 
 	queryInputTable = `
 		INSERT INTO table_resto(
@@ -52,5 +52,20 @@ const (
 
 	queryGetFoodsByCategory = `
 		SELECT * FROM foods WHERE category=$1;
+	`
+	queryInputOrder = `
+		INSERT INTO order_user(
+			order_id,
+			order_date,
+			created_at,
+			updated_at,
+			user_id,
+			table_id
+		) VALUES(
+			$1,$2,$3,$4,$5,$6
+		) 
+	`
+	queryGetOrder = `
+		SELECT * FROM order_user WHERE user_id=$1;
 	`
 )

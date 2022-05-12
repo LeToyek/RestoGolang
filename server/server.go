@@ -23,6 +23,8 @@ func (s *Server) StartServer() {
 	s.Router.POST("/food", s.Handler.AddFood)
 	s.Router.GET("/foods", s.Handler.GetAllfoods)
 	s.Router.GET("/foods/:category", s.Handler.GetFoodsByCategory)
+	s.Router.POST("/order", s.Handler.AddOrder)
+	s.Router.GET("/order", s.Handler.GetOrder)
 	// s.Router.GET("/test", midd(), func(ctx *gin.Context) {
 	// 	userToken := ctx.GetString("UserToken")
 	// 	ctx.IndentedJSON(http.StatusOK, map[string]interface{}{
