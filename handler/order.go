@@ -7,6 +7,7 @@ import (
 
 	helper "resto/helper"
 
+	"github.com/aidarkhanov/nanoid"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,6 +24,7 @@ func (h *Handler) AddOrder(c *gin.Context) {
 	}
 
 	order.User_id = claims.ID
+	order.Order_Id = nanoid.New()
 	order.Created_at = time.Now().String()
 	order.Updated_at = time.Now().String()
 

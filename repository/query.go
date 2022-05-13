@@ -68,4 +68,13 @@ const (
 	queryGetOrder = `
 		SELECT * FROM order_user WHERE user_id=$1;
 	`
+
+	queryAddInvoice = `
+		INSERT INTO invoice(
+			id,
+			order_id,
+			pay_date,
+			total
+		) VALUES ($1,$2,$3,$4)
+	`
 )
