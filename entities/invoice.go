@@ -2,7 +2,7 @@ package entities
 
 type Invoice struct {
 	Invoice_id   string   `json:"invoice_id"`
-	User_id      string   `json:"user_id"`
+	Order_ID     string   `json:"order_id"`
 	Table_number int      `json:"table_number"`
 	Pay_date     string   `json:"Date"`
 	Food_name    []string `json:"Food_name"`

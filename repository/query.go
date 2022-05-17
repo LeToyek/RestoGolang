@@ -72,7 +72,7 @@ const (
 	queryAddInvoice = `
 		INSERT INTO invoice(
 			id,
-			user_id,
+			order_id,
 			pay_date,
 			total
 		) VALUES ($1,$2,$3,$4)
@@ -80,8 +80,7 @@ const (
 
 	queryGetInvoice = `
 		SELECT * FROM invoice 
-		JOIN table_resto AS t ON(o.table_id = t.number)
-		WHERE user_id=$1;
+		WHERE order_id=$1
 	`
 
 	queryGetTotalPriceOrder = `
@@ -89,10 +88,9 @@ const (
 		fo.price*f.total_count AS total_price
 	
 		FROM order_user AS o
-		JOIN users AS u ON(u.user_id = o.user_id)
 		JOIN order_food AS f ON(f.order_id = o.order_id)
 		JOIN foods AS fo ON(fo.food_id = f.food_id)
-		WHERE u.user_id=$1;
+		WHERE o.order_id=$1;
 	`
 
 	queryGetMoreDetailedInvoice = `
@@ -105,5 +103,9 @@ const (
 		JOIN order_food AS f ON(f.order_id = o.order_id)
 		JOIN foods AS fo ON(fo.food_id = f.food_id)
 		WHERE u.user_id=$1;
+	`
+
+	queryGetUserOrderID = `
+		SELECT order_id FROM order_user WHERE user_id=$1
 	`
 )
