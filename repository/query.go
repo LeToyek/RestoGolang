@@ -79,8 +79,11 @@ const (
 	`
 
 	queryGetInvoice = `
-		SELECT * FROM invoice 
-		WHERE order_id=$1
+	SELECT
+	i.id, i.order_id, i.pay_date, i.total, o.table_id
+	FROM invoice as i
+	JOIN order_user AS o ON(i.order_id = o.order_id)
+	WHERE i.order_id=$1
 	`
 
 	queryGetTotalPriceOrder = `
@@ -99,10 +102,9 @@ const (
 		fo.price*f.total_count AS total_price
 		
 		FROM order_user AS o
-		JOIN users AS u ON(u.user_id = o.user_id)
 		JOIN order_food AS f ON(f.order_id = o.order_id)
 		JOIN foods AS fo ON(fo.food_id = f.food_id)
-		WHERE u.user_id=$1;
+		WHERE o.order_id=$1;
 	`
 
 	queryGetUserOrderID = `

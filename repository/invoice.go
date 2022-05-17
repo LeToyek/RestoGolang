@@ -10,7 +10,7 @@ type InvoiceRepository interface {
 	AddInvoice(invoice entities.Invoice) error
 	GetInvoice(OrderID string) (entities.Invoice, error)
 	GetPrice() ([]int, error)
-	GetMoreDetailed(OrderID string) (entities.Invoice, error)
+	GetMoreDetailed(OrderID string) ([]entities.DummyInvoice, error)
 	GetOrderID(userID string) ([]string, error)
 }
 
@@ -35,9 +35,9 @@ func (r *Repository) GetInvoice(OrderID string) (entities.Invoice, error) {
 	err := row.Scan(
 		&invoice.Invoice_id,
 		&invoice.Order_ID,
-		&invoice.Table_number,
 		&invoice.Pay_date,
 		&invoice.Total_cost,
+		&invoice.Table_number,
 	)
 	if err == sql.ErrNoRows {
 		return invoice, errors.New("no rows were returned")
@@ -91,23 +91,27 @@ func (r *Repository) GetPrice(OrderID string) ([]int, error) {
 	return prices, err
 }
 
-func (r *Repository) GetMoreDetailed(OrderID string) (entities.Invoice, error) {
-	var invoice entities.Invoice
+func (r *Repository) GetMoreDetailed(OrderID string) ([]entities.DummyInvoice, error) {
+	var details []entities.DummyInvoice
 
-	row := r.DB.QueryRow(queryGetMoreDetailedInvoice, OrderID)
-
-	err := row.Scan(
-		&invoice.F_name,
-		&invoice.F_count,
-		&invoice.Food_price,
-		&invoice.Total_price,
-	)
-	if err == sql.ErrNoRows {
-		return invoice, errors.New("no rows were returned")
-	}
-	if err != nil {
-		return invoice, err
+	rows, err := r.DB.Query(queryGetMoreDetailedInvoice, OrderID)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
 	}
 
-	return invoice, err
+	for rows.Next() {
+		var detail entities.DummyInvoice
+		var err = rows.Scan(
+			&detail.F_name,
+			&detail.F_count,
+			&detail.F_price,
+			&detail.F_totalPrice,
+		)
+		if err != nil {
+			return nil, err
+		}
+		details = append(details, detail)
+	}
+
+	return details, err
 }

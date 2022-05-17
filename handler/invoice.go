@@ -12,13 +12,7 @@ import (
 	helper "resto/helper"
 )
 
-func (h *Handler) AddInvoice(c *gin.Context) {
-	claims, err := helper.ValidateToken(c)
-	if err != nil {
-		panic(err)
-	}
-
-	userID := claims.ID
+func (h *Handler) addInvoice(userID string) (string, error) {
 
 	orderIDs, err := h.Service.GetOrderID(userID)
 	if err != nil {
@@ -47,24 +41,56 @@ func (h *Handler) AddInvoice(c *gin.Context) {
 		Total_cost: float64(totalPrice),
 	}
 
-	h.Service.AddInvoice(invoice)
-	c.IndentedJSON(http.StatusOK, gin.H{
-		"created": invoice.Invoice_id,
-	})
+	err = h.Service.AddInvoice(invoice)
+
+	return userOrderID, err
 }
 
-// func (h *Handler) GetInvoice(c *gin.Context) {
-// 	claims, err := helper.ValidateToken(c)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	invoice,err := h.Service.GetInvoice(claims.ID)
-// 	detail,err := h.Service.GetMoreDetailed(claims.ID)
+func (h *Handler) GetInvoice(c *gin.Context) {
+	claims, err := helper.ValidateToken(c)
+	if err != nil {
+		panic(err)
+	}
+	userID := claims.ID
 
-// 	invoice = entities.Invoice{
-// 		Table_number: detail.Table_number,
-// 		Food_name: ,
-// 	}
+	orderID, err := h.addInvoice(userID)
+	if err != nil {
+		panic(err)
+	}
 
-// 	c.IndentedJSON(http.StatusOK,i)
-// }
+	invoice, err := h.Service.GetInvoice(orderID)
+	if err != nil {
+		panic(err)
+	}
+
+	details, err := h.Service.GetMoreDetailed(orderID)
+	if err != nil {
+		panic(err)
+	}
+
+	var foodsName []string
+	var foodsCount []int
+	var foodsPrice []int
+	var totalPrices []int
+
+	for _, d := range details {
+		foodsName = append(foodsName, d.F_name)
+		foodsCount = append(foodsCount, d.F_count)
+		foodsPrice = append(foodsPrice, d.F_price)
+		totalPrices = append(totalPrices, d.F_totalPrice)
+	}
+
+	invoice = entities.Invoice{
+		Invoice_id:   invoice.Invoice_id,
+		Order_ID:     invoice.Order_ID,
+		Pay_date:     invoice.Pay_date,
+		Total_cost:   invoice.Total_cost,
+		Table_number: invoice.Table_number,
+		Food_count:   foodsCount,
+		Food_price:   foodsPrice,
+		Total_price:  totalPrices,
+		Food_name:    foodsName,
+	}
+
+	c.IndentedJSON(http.StatusOK, invoice)
+}

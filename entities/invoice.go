@@ -7,9 +7,13 @@ type Invoice struct {
 	Pay_date     string   `json:"Date"`
 	Food_name    []string `json:"Food_name"`
 	Food_count   []int    `json:"Food_count"`
-	Food_price   int      `json:"Food_price"`
-	Total_price  int      `json:"Total_price"`
+	Food_price   []int    `json:"Food_price"`
+	Total_price  []int    `json:"Total_price"`
 	Total_cost   float64  `json:"Total_cost"`
+}
+type DummyInvoice struct {
 	F_name       string
 	F_count      int
+	F_price      int
+	F_totalPrice int
 }

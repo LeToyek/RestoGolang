@@ -6,7 +6,7 @@ type InvoiceService interface {
 	AddInvoice(invoice entities.Invoice) error
 	GetInvoice(OrderID string) (entities.Invoice, error)
 	GetPrice(OrderID string) ([]int, error)
-	GetMoreDetailed(OrderID string) (entities.Invoice, error)
+	GetMoreDetailed(OrderID string) ([]entities.DummyInvoice, error)
 	GetOrderID(userID string) ([]string, error)
 }
 
@@ -21,7 +21,7 @@ func (s *Service) GetInvoice(OrderID string) (entities.Invoice, error) {
 func (s *Service) GetPrice(OrderID string) ([]int, error) {
 	return s.Repository.GetPrice(OrderID)
 }
-func (s *Service) GetMoreDetailed(OrderID string) (entities.Invoice, error) {
+func (s *Service) GetMoreDetailed(OrderID string) ([]entities.DummyInvoice, error) {
 	return s.Repository.GetMoreDetailed(OrderID)
 }
 func (s *Service) GetOrderID(userID string) ([]string, error) {

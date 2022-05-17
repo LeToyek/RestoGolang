@@ -25,7 +25,7 @@ func (s *Server) StartServer() {
 	s.Router.GET("/foods/:category", s.Handler.GetFoodsByCategory)
 	s.Router.POST("/order", s.Handler.AddOrder)
 	s.Router.GET("/order", s.Handler.GetOrder)
-	s.Router.POST("/invoice", s.Handler.AddInvoice)
+	s.Router.GET("/invoice", s.Handler.GetInvoice)
 	// s.Router.GET("/test", midd(), func(ctx *gin.Context) {
 	// 	userToken := ctx.GetString("UserToken")
 	// 	ctx.IndentedJSON(http.StatusOK, map[string]interface{}{
