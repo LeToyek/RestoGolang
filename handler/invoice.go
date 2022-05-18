@@ -68,16 +68,16 @@ func (h *Handler) GetInvoice(c *gin.Context) {
 		panic(err)
 	}
 
-	var foodsName []string
-	var foodsCount []int
-	var foodsPrice []int
-	var totalPrices []int
+	var foodDetails []entities.DummyInvoice
 
-	for _, d := range details {
-		foodsName = append(foodsName, d.F_name)
-		foodsCount = append(foodsCount, d.F_count)
-		foodsPrice = append(foodsPrice, d.F_price)
-		totalPrices = append(totalPrices, d.F_totalPrice)
+	for i := 0; i < len(details); i++ {
+		dummyInvoice := entities.DummyInvoice{
+			F_name:       details[i].F_name,
+			F_count:      details[i].F_count,
+			F_price:      details[i].F_price,
+			F_totalPrice: details[i].F_totalPrice,
+		}
+		foodDetails = append(foodDetails, dummyInvoice)
 	}
 
 	invoice = entities.Invoice{
@@ -86,10 +86,7 @@ func (h *Handler) GetInvoice(c *gin.Context) {
 		Pay_date:     invoice.Pay_date,
 		Total_cost:   invoice.Total_cost,
 		Table_number: invoice.Table_number,
-		Food_count:   foodsCount,
-		Food_price:   foodsPrice,
-		Total_price:  totalPrices,
-		Food_name:    foodsName,
+		Food_detail:  foodDetails,
 	}
 
 	c.IndentedJSON(http.StatusOK, invoice)
